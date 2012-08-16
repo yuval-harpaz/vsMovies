@@ -47,3 +47,9 @@ vs2brik(cfg,kur)
 
 % apply g2 masks
 !~/abin/3dcalc -a sc_abs_wts+orig -b kur+orig -expr 'a*ispositive(b-3)+0.0001*ispositive(a)' -float -prefix kurMsk3
+
+% set threshold
+
+!~/abin/3dcalc -a "kurMsk3+orig[0..$]<2..100>" -expr 'a' -prefix kurMsk3_thr2
+
+!~/abin/3dcalc -a "kurMsk3+orig[0..$]<4..100>" -expr 'a' -prefix kurMsk3_thr4
