@@ -18,16 +18,47 @@ load avg
 %        the smallest (negative) x,y and z, respectively.
 %        here the first vs location is -12,-9,-2. the second is -12,-9,-1.5 and so on.
 %        see cfg.boxSize below
+% I got ActWgts in mat format from *.wts (Dr. Robinson's output of SAMwts)
+% using this function:
+% https://github.com/yuval-harpaz/SAM_BIU/blob/master/matlab/readWeights.m
 load ActWgts
+% multiply weights by data to form the virtual sensor traces
+VS=ActWgts*avg;
 
-
-load rmsWts
-timeStep=1; %in samples
-torig=-0.1; %beginning of VS in sec
-[VS,timeline,AllInd]=VS_slice(VG,'~/Data/tel_hashomer/yuval/SAM/VGerf,1-35Hz,VerbAa.wts',timeStep,[torig 0.5]);
-% [vs,allInd]=inScalpVS(VS,AllInd);
-TR=num2str(1000*timeStep/1017.25); % time of requisition, time gap between samples
+% to create a 4-D with vs2brik image we take a template 'funcTemp+orig.BRIK'. you can create one
+% with afni function 3dUndump or use 3dcopy to convert an .svl file to afni
+% format. or use the one I use here. you have to define the time axsis with
+% torig and TR and the size of the box. 
+torig=100; % beginning of VS in ms
+TR=num2str(1000/1017.25); % time of requisition, time gap between samples (sampling rate here is 1017.25)
 cfg=[];
+cfg.func='~/vsMovies/Data/funcTemp+orig';
+cfg.step=0.5;
+cfg.boxSize=[-12 12 -9 9 -2 15];
+cfg.prefix='raw';
+cfg.TR=TR;
+cfg.torig=torig;
+VS2Brik4D(cfg,VS);
+
+% 
+
+AP=-12:0.5:12;LR=-9:0.5:9;IS=-2:0.5:15;
+rmsi=0;
+for voxi=AP
+    for voxj=LR
+        for voxk=IS
+            [ind,~]=voxIndex([voxi,voxj,voxk],boxSize,step);
+            wts=ActWgts(ind,:);
+            rmsi=rmsi+1;
+            rmsWts(rmsi)=sqrt(mean(wts.^2));
+            maxWts(rmsi)=max(abs(wts));
+        end
+    end
+end
+load rmsWts
+
+cfg=[];
+
 cfg.func='funcTemp+orig';
 cfg.step=0.5;
 cfg.boxSize=[-12 12 -9 9 -2 15];
