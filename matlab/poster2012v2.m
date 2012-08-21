@@ -1,4 +1,4 @@
-%% Version 2
+%% vsMovies Version 2
 % this is version is intended to be an idependent script
 % the previous script poster2012 is how I created my movie while using my
 % other repositories in github.com/yuval-harpaz. this one requires no dependencies.
@@ -40,39 +40,33 @@ cfg.TR=TR;
 cfg.torig=torig;
 VS2Brik4D(cfg,VS);
 
-% 
+% to view the image open afni with ortho+orig as underlay and raw+orig as
+% overlay. click "new" for a new afni gui, there choose raw+orig as
+% underlay and open a graph. you have to definre timelock as well in define
+% datamode somewhere. wait, don't do it yet. the scale however is too small
+% for afni. here is a rescaling command
+!~/abin/3dcalc -a raw+orig -expr '1e+9*a' -prefix sc_raw
+% now you can watch it with afni. I saved .afni.startup_script to open the
+% windows. after running afni it all opens up. you only have to open a
+% graph on the second instance of afni and choose define data mode > lock > timelock
+% you can open afni from matlab like this:
+!~/abin/afni &
 
-AP=-12:0.5:12;LR=-9:0.5:9;IS=-2:0.5:15;
-rmsi=0;
-for voxi=AP
-    for voxj=LR
-        for voxk=IS
-            [ind,~]=voxIndex([voxi,voxj,voxk],boxSize,step);
-            wts=ActWgts(ind,:);
-            rmsi=rmsi+1;
-            rmsWts(rmsi)=sqrt(mean(wts.^2));
-            maxWts(rmsi)=max(abs(wts));
-        end
-    end
-end
-load rmsWts
+%% 'rms of weights' correction for depth
+% calculating rms for the weights and make an image
+rmsWts=sqrt(mean(ActWgts.*ActWgts,2)');
 
 cfg=[];
-
 cfg.func='funcTemp+orig';
 cfg.step=0.5;
 cfg.boxSize=[-12 12 -9 9 -2 15];
 cfg.prefix='rmsWts';
 vs2brik(cfg,rmsWts')
 
-cfg.prefix='raw';
-cfg.TR=TR;
-cfg.torig=torig*1000;
-vs2brik4D(cfg,VS)
-!~/abin/3dcalc -a raw+orig -expr '1e+9*a' -prefix sc_raw
-
+% correct VS for depth by dividing by rms of weights (and display abs values)
 !~/abin/3dcalc -a raw+orig -b rmsWts+orig -expr '1e+13*abs(a/b)' -prefix sc_abs_wts
 
+%% absolute pseudo Z
 sdNoise=std(VS(:,1:102)');
 %sdmat=vec2mat(sdnoise,size(VS,2))';
 meanNoise=mean(VS(:,1:102),2);
@@ -81,27 +75,30 @@ cfg.func='funcTemp+orig';
 cfg.step=0.5;
 cfg.boxSize=[-12 12 -9 9 -2 15];
 cfg.prefix='BLmean';
-vs2brik(cfg,meanNoise)
+VS2Brik(cfg,meanNoise)
 cfg.prefix='BLsd';
-vs2brik(cfg,sdNoise')
+VS2Brik(cfg,sdNoise')
 
 !~/abin/3dcalc -a raw+orig -b BLmean+orig -c BLsd+orig -expr 'abs((a-b)/c)' -prefix abs_pseudoZ
 
-
-kur=g2(VS(:,103:end));
+%% Kurtosis based (g2) mask
+kur=G2(VS(:,103:end)); % I start from sample 103 (100ms) because I don't
+% want "spikes" in the baseline period to be considered as activity
 cfg=[];
 cfg.func='funcTemp+orig';
 cfg.step=0.5;
 cfg.boxSize=[-12 12 -9 9 -2 15];
 cfg.prefix='kur';
-vs2brik(cfg,kur)
+VS2Brik(cfg,kur)
 
 
-% apply g2 masks
-!~/abin/3dcalc -a sc_abs_wts+orig -b kur+orig -expr 'a*ispositive(b-3)+0.0001*ispositive(a)' -float -prefix kurMsk3
+% apply g2 mask. for higher g2 threshold x use ispositive(b-x)
+% I added 0.0001 to paint zeros blue rather than making them disappear.
+!~/abin/3dcalc -a sc_abs_wts+orig -b kur+orig -expr 'a*ispositive(b)+0.0001*ispositive(a)' -float -prefix kurMsk
 
-% set threshold
+% since afni gui doesn't deal well with 4-D thresholding set threshold
+% youerself. get only values between 4 and 100 pass. I meant it to be 2 high pass 
+% but couldn't find the right sytax so it is 4 to something very big (100).
+% note this time we are talking about VS values, not g2.
 
-!~/abin/3dcalc -a "kurMsk3+orig[0..$]<2..100>" -expr 'a' -prefix kurMsk3_thr2
-
-!~/abin/3dcalc -a "kurMsk3+orig[0..$]<4..100>" -expr 'a' -prefix kurMsk3_thr4
+!~/abin/3dcalc -a "kurMsk+orig[0..$]<4..100>" -expr 'a' -prefix kurMsk_thr4

@@ -81,15 +81,3 @@ if exist([cfg.prefix,'+orig.BRIK'],'file')
 end
 %write it
 [err, ErrMessage, InfoNewTSOut] = WriteBrik (Vfunc, InfoNewTSOut, OptTSOut);
-
-% InfoNewTSOut = Infofunc;
-% InfoNewTSOut.RootName = '';
-% InfoNewTSOut.BRICK_STATS = []; %automatically set
-% InfoNewTSOut.BRICK_FLOAT_FACS = []; %automatically set
-% InfoNewTSOut.IDCODE_STRING = '';%automatically set
-% OptTSOut.Scale = 1;
-% OptTSOut.Prefix = cfg.prefix;
-% OptTSOut.verbose = 1;
-% %write it
-% % dim APL
-% [err, ErrMessage, InfoNewTSOut] = WriteBrik (vs, InfoNewTSOut, OptTSOut);
