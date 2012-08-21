@@ -1,0 +1,15 @@
+vsMovies
+========
+
+creating movies of brain activity from virtual sensors using MATLAB and AFNI
+
+add matlab directory to your MATLAB path and start with poster2012v2.m
+
+this repository requires AFNI, including afni matlab pack. works on Linux only (tested on Ubuntu 64 bit).
+
+note the download button. the mterials and scripts can be downloaded from there.
+you are welcome to clone the repository instead for easy updates.
+
+the code is open source under GPLv2 terms.
+
+yuval
