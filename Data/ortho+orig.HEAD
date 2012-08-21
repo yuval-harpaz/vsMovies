@@ -1,0 +1,145 @@
+
+type = string-attribute
+name = HISTORY_NOTE
+count = 387
+'[yuval@yuval-HP: Wed Oct 12 16:50:59 2011] Dataset Copy {Input: Dataset=./s027963057-0003-00001-000001-01.hdr+orig.HEAD} {Output: Prefix=anat}\n[yuval@yuval-HP: Wed Oct 12 17:06:52 2011] 3dTagalign -prefix ./ortho -master /home/yuval/brainhull/master+orig anat+orig\n[yuval@yuval-HP: Wed Oct 12 17:19:31 2011] plug_nudge: -rotate   0.00I  -4.00R   0.00A  -ashift   0.00S   0.00L  -6.00P~
+
+type  = float-attribute
+name  = TAGALIGN_MATVEC
+count = 12
+      0.9997158    0.002796603     0.02367489       1.117033    0.004184908
+      0.9570867     -0.2897716       27.06103     -0.0234693      0.2897883
+       0.956803       32.97464
+
+type = string-attribute
+name = TYPESTRING
+count = 15
+'3DIM_HEAD_ANAT~
+
+type = string-attribute
+name = IDCODE_STRING
+count = 27
+'XYZ_cRkiV9o9x3TMTzo314b69w~
+
+type = string-attribute
+name = IDCODE_DATE
+count = 25
+'Wed Oct 12 17:06:49 2011~
+
+type = integer-attribute
+name = SCENE_DATA
+count = 8
+ 0 11 0 -999 -999
+ -999 -999 -999
+
+type = string-attribute
+name = LABEL_1
+count = 5
+'zyxt~
+
+type = string-attribute
+name = LABEL_2
+count = 5
+'zyxt~
+
+type = string-attribute
+name = DATASET_NAME
+count = 5
+'zyxt~
+
+type = integer-attribute
+name = ORIENT_SPECIFIC
+count = 3
+ 3 5 1
+
+type  = float-attribute
+name  = ORIGIN
+count = 3
+           -127            180            127
+
+type  = float-attribute
+name  = DELTA
+count = 3
+              1             -1             -1
+
+type  = float-attribute
+name  = IJK_TO_DICOM
+count = 12
+              0              0             -1            127              1
+              0              0           -127              0             -1
+              0            180
+
+type  = float-attribute
+name  = IJK_TO_DICOM_REAL
+count = 12
+              0              0             -1            127              1
+              0              0           -127              0             -1
+              0            180
+
+type  = float-attribute
+name  = BRICK_STATS
+count = 2
+              0           6866
+
+type = integer-attribute
+name = TAGSET_NUM
+count = 2
+ 3 5
+
+type  = float-attribute
+name  = TAGSET_FLOATS
+count = 15
+      -1.401811       -93.3827   1.785025e-08              1              0
+       74.21829        2.52137  -8.061598e-09              1              0
+      -72.81648      0.8613301   -9.78865e-09              1              0
+
+type = string-attribute
+name = TAGSET_LABELS
+count = 30
+'Nasion~Left Ear~Right Ear~[2%~
+
+type = integer-attribute
+name = DATASET_RANK
+count = 8
+ 3 1 0 0 0
+ 0 0 0
+
+type = integer-attribute
+name = DATASET_DIMENSIONS
+count = 5
+ 256 256 256 0 0
+
+type = integer-attribute
+name = BRICK_TYPES
+count = 1
+ 1
+
+type  = float-attribute
+name  = BRICK_FLOAT_FACS
+count = 1
+              0
+
+type = string-attribute
+name = BRICK_LABS
+count = 3
+'#0~
+
+type = string-attribute
+name = BRICK_KEYWORDS
+count = 1
+'~
+
+type = string-attribute
+name = TEMPLATE_SPACE
+count = 5
+'ORIG~
+
+type = integer-attribute
+name = INT_CMAP
+count = 1
+ 0
+
+type = string-attribute
+name = BYTEORDER_STRING
+count = 10
+'LSB_FIRST~
