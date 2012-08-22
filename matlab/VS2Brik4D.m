@@ -1,4 +1,4 @@
-function VS2Brik(cfg,vs)
+function VS2Brik4D(cfg,vs)
 % cfg should include func field with a name of functional data in BRIK
 % format.
 % cfg.TR (time of requisition) is the difference between two samples in S or ms.
