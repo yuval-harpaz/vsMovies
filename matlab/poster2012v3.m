@@ -1,5 +1,5 @@
 %% vsMovies Version 3
-% this is version is intended to be an idependent script
+% this version is intended to be an idependent script
 % the previous script poster2012 is how I created my movie while using my
 % other repositories in github.com/yuval-harpaz. this one requires no dependencies.
 % it assumes you have afni and vsMovies in your home folder and that you 
@@ -42,25 +42,23 @@ VS2Brik4Dv3(cfg,VS);
 % to view the image open afni with ortho+orig as underlay and raw+orig as
 % overlay. click "new" for a new afni gui, there choose raw+orig as
 % underlay and open a graph. you have to definre timelock as well in define
-% datamode somewhere. wait, don't do it yet. the scale however is too small
-% for afni. here is a rescaling command
+% datamode > lock. here is a rescaling command if the graph shows no VS
 !~/abin/3dcalc -a raw+orig -expr '1e+9*a' -prefix sc_raw
-% now you can watch it with afni. I saved .afni.startup_script to open the
-% windows. after running afni it all opens up. you only have to open a
-% graph on the second instance of afni and choose define data mode > lock > timelock
+
+% I saved .afni.startup_script to open the windows. after running afni it
+% all opens up. you only have to open a graph on the second instance of
+% afni and choose define data mode > lock > timelock
 % you can open afni from matlab like this:
 !~/abin/afni &
 
 %% 'rms of weights' correction for depth
 % calculating rms for the weights and make an image
 rmsWts=sqrt(mean(ActWgts.*ActWgts,2)');
-
 cfg=[];
-cfg.func='funcTemp+orig';
-cfg.step=0.5;
-cfg.boxSize=[-12 12 -9 9 -2 15];
+cfg.step=5;
+cfg.boxSize=[-120 120 -90 90 -20 150];
 cfg.prefix='rmsWts';
-vs2brik(cfg,rmsWts')
+VS2Brik4Dv3(cfg,rmsWts')
 
 % correct VS for depth by dividing by rms of weights (and display abs values)
 !~/abin/3dcalc -a raw+orig -b rmsWts+orig -expr '1e+13*abs(a/b)' -prefix sc_abs_wts
