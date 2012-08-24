@@ -3,7 +3,7 @@ vsMovies
 
 creating movies of brain activity from virtual sensors using MATLAB and AFNI
 
-add the matlab directory to your MATLAB path and start with pipeline.m
+add the matlab directory to your MATLAB path and start with vsm_pipeline.m
 
 this repository requires AFNI, including afni matlab pack. works on Linux only (tested on Ubuntu 64 bit).
 
