@@ -67,7 +67,6 @@ VS2Brik(cfg,rmsWts')
 
 %% absolute pseudo Z
 sdNoise=std(VS(:,1:102)');
-%sdmat=vec2mat(sdnoise,size(VS,2))';
 meanNoise=mean(VS(:,1:102),2);
 cfg=[];
 cfg.func='funcTemp+orig';
