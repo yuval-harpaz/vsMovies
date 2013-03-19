@@ -7,8 +7,11 @@ add the matlab directory to your MATLAB path and start with vsm_pipeline.m
 
 this repository requires AFNI, including afni matlab pack. works on Linux only (tested on Ubuntu 64 bit).
 
-note the download button. the mterials and scripts can be downloaded from there.
-you are welcome to clone the repository instead for easy updates.
+to download and unpack AFNI matlab library:
+
+wget http://afni.nimh.nih.gov/pub/dist/tgz/afni_matlab.tgz
+tar -xzf afni_matlab.tgz
+rm afni_matlab.tgz
 
 the code is open source under GPLv2 terms.
 
