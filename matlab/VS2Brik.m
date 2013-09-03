@@ -17,13 +17,15 @@ xsize=length(xyzMin(1):cfg.step:xyzMax(1));
 ysize=length(xyzMin(2):cfg.step:xyzMax(2));
 zsize=length(xyzMin(3):cfg.step:xyzMax(3));
 % here I create a functional template from scratch
-if ~exist ('temp+orig.BRIK','file')
-    xyzstr=[num2str(xsize),' ',num2str(ysize),' ',num2str(zsize)];
-    eval(['!~/abin/3dUndump -dimen ',xyzstr,' -prefix temp']);
-    !~/abin/3drefit -xyzscale 5 temp+orig
-    origins=abs(xyzMin);
-    eval(['!~/abin/3drefit -orient PRI -xorigin ',num2str(origins(1)),' -yorigin ',num2str(origins(2)),' -zorigin ',num2str(origins(3)),' temp+orig'])
+if exist ('./temp+orig.BRIK','file')
+    !rm temp+orig*
 end
+xyzstr=[num2str(xsize),' ',num2str(ysize),' ',num2str(zsize)];
+eval(['!~/abin/3dUndump -dimen ',xyzstr,' -prefix temp']);
+!~/abin/3drefit -xyzscale 5 temp+orig
+origins=abs(xyzMin);
+eval(['!~/abin/3drefit -orient PRI -xorigin ',num2str(origins(1)),' -yorigin ',num2str(origins(2)),' -zorigin ',num2str(origins(3)),' temp+orig'])
+
 
 [~, ~, Infofunc, ~] = BrikLoad ('temp+orig');
 
@@ -67,4 +69,5 @@ if exist([cfg.prefix,'+orig.BRIK'],'file')
 end
 %write it
 WriteBrik (newVfunc, InfoNewTSOut, OptTSOut);
+!rm temp+orig*
 end
